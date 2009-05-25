@@ -1,0 +1,60 @@
+<?php
+
+// $Id$
+
+/**
+ * @file 
+ */
+
+/**
+ * Implementation of hook_menu()
+ */
+function terminal_menu() {
+  $items = array();
+  $items['terminal'] = array(
+    'page callback' => 'terminal_get_form',
+    'page arguments' => array('terminal_terminal_form'),
+    'access arguments' => array('access terminal'),
+  );
+
+  return $items;
+}
+
+/**
+ * Implementation of hook_perm()
+ */
+function terminal_perm() {
+  return array('access terminal');
+}
+
+/**
+ * Implementation of hook_init()
+ * TODO do some proper check if library is there
+ */
+function terminal_init() {
+  drupal_add_js(drupal_get_path('module', 'terminal') .'/terminal.js');
+  drupal_add_js(drupal_get_path('module', 'terminal') .'/jquery-console/console.js');
+  drupal_add_js(drupal_get_path('module', 'terminal') .'/jquery-console/array.js');
+  drupal_add_js(drupal_get_path('module', 'terminal') .'/jquery-console/keymapper.js');
+  drupal_add_js(drupal_get_path('module', 'terminal') .'/jquery-console/lingo.js');
+  drupal_add_js(drupal_get_path('module', 'terminal') .'/jquery-console/jquery-dom.js');
+  drupal_add_js(drupal_get_path('module', 'terminal') .'/jquery-console/jquery.dump.js');
+}
+
+function terminal_terminal_form() {
+  $form = array();
+  $form['terminal'] = array(
+    '#type' => 'textarea',
+    '#rows' => 1,
+    '#attributes' => array(
+      'id' => 'terminal',
+      'wrap' => 'off',
+    ),
+  );
+  return $form;
+}
+
+function terminal_get_form($form_id) {
+  print drupal_get_form($form_id);
+  exit;
+}
