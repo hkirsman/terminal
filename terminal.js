@@ -2,12 +2,12 @@ if (Drupal.jsEnabled) {
   $(document).ready(function() {
       // Attach the terminal to the bottom
       $('html').append('<div id="terminal-container"></div>');
-      var screen = '<div id="terminal-screen"></div>';
-      $.get('terminal', function(data) {
-        $('#terminal-container').append(screen).append(data);
-        $('#terminal-screen').css({'position': 'fixed', 'bottom': 0, 'right': 0, 'z-index': 42, 'width': '50%', 'background-color': '#ddd', 'color': 'black', 'opacity': 0.7});
-        $('#edit-terminal').css({'position': 'fixed', 'bottom': 0, 'z-index': 42, 'width': '50%'});
-        jQConsole("#edit-terminal", "#terminal-screen");    
-      });
+      var user = Drupal.settings['user'];
+      var host = Drupal.settings['user'];
+      var sitename = Drupal.settings['sitename'];
+      var welcome_message = 'Welcome to ' + sitename + '!';
+      var prompt = user + '@' + host + ' >';
+      $('#terminal-container').height('200px');
+      $('#terminal-container').terminal('index.php?q=terminal', {custom_prompt : prompt, hello_message : welcome_message});
   });
 }
