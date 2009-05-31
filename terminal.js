@@ -1,3 +1,5 @@
+// $Id$
+
 if (Drupal.jsEnabled) {
   $(document).ready(function() {
       // Attach the terminal to the bottom

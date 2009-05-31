@@ -25,7 +25,7 @@
 			'input_name' : 'input',
 			'post_vars' : {},
 			'custom_prompt' : false,
-            'focus_on_load' : true,
+      'focus_on_load' : true,
 			'submit_on_load' : false,
 			'grab_focus_on_click' : true,
 			'hello_message' : false,
@@ -36,20 +36,17 @@
 			'onload' : null,
 		}, options);
 
-		if (settings.custom_prompt)
-		{
+		if (settings.custom_prompt) {
 			settings.custom_prompt = $.trim(settings.custom_prompt) + ' ';
 		}
 
-		return this.each(function()
-		{
+		return this.each(function() {
 			var terminal_container = $(this);
 
 			terminal_container.append('<div></div>');
 			var terminal = terminal_container.find('div:last');
 
-			if (settings.max_height == '100%')
-			{
+			if (settings.max_height == '100%') {
 				settings.max_height = terminal_container.innerHeight();
 			}
 
@@ -67,8 +64,7 @@
 			terminal.append('<form method="'+settings.form_method+'" action="'+url+'"></form>');
 			var terminal_form = $(this).find('form:last');
 
-			if (settings.custom_prompt)
-			{
+			if (settings.custom_prompt) {
 				terminal_form.append('<span>' + settings.custom_prompt + '</span>');
 			}
 
@@ -79,13 +75,11 @@
 			for (var i=0; i<settings.tab_width; i++)
 				tabString+= "&nbsp;";
 
-			var terminal_append = function(data)
-			{
+			var terminal_append = function(data) {
 				var formattedData = $('<span></span>').text(data);
 				var dataRows = formattedData.html().split(/\n/);
 				data = '';
-				for (row in dataRows)
-				{
+				for (row in dataRows) {
 					data += '<span>' + dataRows[row].replace(/\t/g, tabString);
 					if (!(row == dataRows.length-1 && (!dataRows[row] || !settings.custom_prompt)))
 						data+= '<br />';
@@ -98,47 +92,40 @@
 				terminal_input.val('').focus();
 				
 				// if input is disabled, we trick a focus so the scrolling will be ok
-				if (settings.disable_input)
-				{
+				if (settings.disable_input) {
 					terminal_input.removeAttr('disabled').focus().attr('disabled', 'disabled');
 				}
 			}
 			// outsource this function for misc. implementations
 			terminal_container[0].append = terminal_append;
 			
-			var terminal_command = function(first)
-			{
+			var terminal_command = function(first) {
 				var first = first || false;
 				var val = $.trim(terminal_input.val());
 
-                if ("" == val && !first)
-				{
-                	if (!settings.allow_empty_input)
-                		return;
-				}
+        if ("" == val && !first) {
+          if (!settings.allow_empty_input)
+            return;
+        }
 
-                terminal_form.hide();
-                if ("" != val || settings.allow_empty_input)
-                {
-                    var last_command = '<span>';
-                    last_command+= settings.custom_prompt? settings.custom_prompt : '';
-                    last_command+= val + '<br />';
-                    terminal_output.append(last_command);
-                }
+        terminal_form.hide();
+        if ("" != val || settings.allow_empty_input) {
+          var last_command = '<span>';
+          last_command+= settings.custom_prompt? settings.custom_prompt : '';
+          last_command+= val + '<br />';
+          terminal_output.append(last_command);
+        }
 
-                post_vars = settings.post_vars;
-                post_vars[settings.input_name] = val;
+        post_vars = settings.post_vars;
+        post_vars[settings.input_name] = val;
 
-				function terminal_command_success(data)
-				{
+				function terminal_command_success(data) {
 					return terminal_append(data);
 				}
 
-				function terminal_command_error(x, tStatus)
-				{
+				function terminal_command_error(x, tStatus) {
 					var out = 'ERROR: ';
-					switch(tStatus)
-					{
+					switch(tStatus) {
 						case 'timeout':
 							out+= 'Server timeout. Try again later.';
 							break;
@@ -174,11 +161,15 @@
 			terminal_input.css('width', '80%');
 			terminal_input.attr('autocomplete', 'off');
 
-			if (settings.unix_theme)
-			{
+			if (settings.unix_theme) {
 				terminal_container.css({
 					'border' : 'none',
 					'background-color' : 'black',
+          'display': 'block',
+          'position': 'fixed',
+          'bottom' : 0,
+          'z-index' : 100,
+          'width' : '100%',
 				});
 				terminal_form.css({
 					'padding' : '0',
@@ -198,14 +189,11 @@
 				});
 			}
 
-			$(document).ready(function()
-			{
-				if (settings.grab_focus_on_click)
-				{
+			$(document).ready(function() {
+				if (settings.grab_focus_on_click) {
 					terminal_container.mouseup(function()
 					{
-						if ("" == document.getSelection())
-						{
+						if ("" == document.getSelection()) {
 							$(terminal_input.focus());
 						}
 					});

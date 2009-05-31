@@ -45,16 +45,41 @@ function terminal_init() {
 
 function terminal_ajax_callback() {
   $input = $_POST['input'];
+  terminal_log_history($input);
+
   $args = explode(" ", $input);
   $command = array_shift($args);
   switch ($command) {
   case 'adduser':
     terminal_adduser($args);
     break;
+  case 'goto':
+    terminal_goto($args);
+    break;
+  case 'nodedel':
+    terminal_nodedel($args);
+    break;
   }
 
   exit;
 }
 
+function terminal_nodedel($args) {
+  $nid = $args[0];
+  $node = node_load($nid);
+  node_delete($nid);
+  print t('Node @title deleted', array('@title' => $node->title));
+}
+
+function terminal_goto($args) {
+  $path = $args[0];
+  print $path;
+}
+
 function terminal_adduser($args) {
+}
+
+function terminal_log_history($input) {
+  global $user;
+  //db_query('INSERT INTO {terminal_history} (uid, input) VALUES (%d, "%s")', $input, $user->uid);
 }
