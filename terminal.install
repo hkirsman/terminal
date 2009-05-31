@@ -1,0 +1,34 @@
+<?php
+
+// $Id$
+
+/**
+ * Implementation of hook_schema()
+ */
+function terminal_schema() {
+  $schema = array();
+  $schema['terminal_history'] = array(
+    'description' => t('History of commands issued by the users.'),
+    'fields' => array(
+      'uid' => array(
+        'description' => t('User id of the user issuing the command.'),
+        'type' => 'int',
+      ),
+      'input' => array(
+        'description' => t('Full input submitted.'),
+        'type' => 'varchar',
+        'length' => 256,
+      ),
+    ),
+  );
+  return $schema;
+}
+
+function terminal_install() {
+  drupal_install_schema('terminal');
+}
+
+function terminal_uninstall() {
+  drupal_uninstall_schema('terminal');
+}
+
