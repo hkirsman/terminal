@@ -1,34 +1,19 @@
 <?php
-
 // $Id$
 
-/**
- * Implementation of hook_schema()
- */
-function terminal_schema() {
-  $schema = array();
-  $schema['terminal_history'] = array(
-    'description' => t('History of commands issued by the users.'),
-    'fields' => array(
-      'uid' => array(
-        'description' => t('User id of the user issuing the command.'),
-        'type' => 'int',
-      ),
-      'input' => array(
-        'description' => t('Full input submitted.'),
-        'type' => 'varchar',
-        'length' => 256,
-      ),
-    ),
-  );
-  return $schema;
-}
-
 function terminal_install() {
-  drupal_install_schema('terminal');
+  switch ($GLOBALS['db_type']) {
+  case 'mysql':
+  case 'mysqli':
+    db_query("CREATE TABLE {terminal_history} (
+      uid int(10) unsigned NOT NULL default '0',
+      input varchar(256) NOT NULL default '',
+    ) /*!40100 DEFAULT CHARACTER SET utf8 */;");
+    break;
+  }
 }
 
 function terminal_uninstall() {
-  drupal_uninstall_schema('terminal');
+  db_query('DROP TABLE {terminal_history}');
 }
 
