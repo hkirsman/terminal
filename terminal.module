@@ -12,9 +12,9 @@
 function terminal_menu() {
   $items = array();
   $items['terminal'] = array(
-    'path' => 'terminanl',
     'page callback' => 'terminal_ajax_callback',
-    'access' => user_access('access terminal'),
+    //'page arguments' => array(),
+    'access arguments' => array('access terminal'),
   );
 
   return $items;
