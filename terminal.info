@@ -1,3 +1,4 @@
 ; $Id$
 name = Terminal
 description = Provide a JavaScript command-line interface for a Drupal site.
+core = 6.x
