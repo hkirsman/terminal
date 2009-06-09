@@ -12,9 +12,17 @@
 function terminal_menu() {
   $items = array();
   $items['terminal'] = array(
+    'title' => 'Terminal AJAX Callback',
     'page callback' => 'terminal_ajax_callback',
-    //'page arguments' => array(),
     'access arguments' => array('access terminal'),
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['terminal/state'] = array(
+    'title' =>'State callback',
+    'page callback' => 'terminal_state_callback',
+    'access arguments' => user_access('access terminal'),
+    'type' => MENU_CALLBACK,
   );
 
   return $items;
@@ -28,9 +36,18 @@ function terminal_perm() {
 }
 
 /**
+ * Terminal textarea
+ */
+function terminal_form() {
+  $form = array();
+  return $form;
+}
+
+/**
  * Implementation of hook_init()
  */
 function terminal_init() {
+  if (user_access('access terminal')) {
   drupal_add_js(drupal_get_path('module', 'terminal') .'/terminal.js');
   drupal_add_js(drupal_get_path('module', 'terminal') .'/jquery.terminal.js');
   global $user;
@@ -41,6 +58,20 @@ function terminal_init() {
     'sitename' => variable_get('site_name', ''),
   );
   drupal_add_js($settings, 'setting');
+  }
+}
+
+/**
+ * Set/get the terminal visibility state
+ */
+function terminal_state_callback($state = NULL) {
+  // Yes I know, per-user. Also not sure if its safe.
+  if (isset($state)) {
+    variable_set('terminal_state', $state);
+  }
+  else {
+    print variable_get('terminal_state', 'visible');
+  }
 }
 
 function terminal_ajax_callback() {
@@ -49,16 +80,11 @@ function terminal_ajax_callback() {
 
   $args = explode(" ", $input);
   $command = array_shift($args);
-  switch ($command) {
-  case 'adduser':
-    terminal_adduser($args);
-    break;
-  case 'goto':
-    terminal_goto($args);
-    break;
-  case 'nodedel':
-    terminal_nodedel($args);
-    break;
+  if (function_exists('terminal_'. $command)) {
+    call_user_func('terminal_'. $command, $args);
+  }
+  else {
+    print t('Invalid command');
   }
 
   exit;
@@ -81,5 +107,5 @@ function terminal_adduser($args) {
 
 function terminal_log_history($input) {
   global $user;
-  //db_query('INSERT INTO {terminal_history} (uid, input) VALUES (%d, "%s")', $input, $user->uid);
+  db_query('INSERT INTO {terminal_history} (uid, input) VALUES (%d, "%s")', $input, $user->uid);
 }
