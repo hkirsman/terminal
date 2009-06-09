@@ -51,7 +51,6 @@
 			}
 
 			terminal.css({
-				'display' : 'block',
 				'overflow-x' : 'none',
 				'overflow-y' : 'auto',
 				'padding' : '0',
@@ -165,7 +164,6 @@
 				terminal_container.css({
 					'border' : 'none',
 					'background-color' : 'black',
-          'display': 'block',
           'position': 'fixed',
           'bottom' : 0,
           'z-index' : 100,

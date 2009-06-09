@@ -2,10 +2,18 @@
 
 if (Drupal.jsEnabled) {
   $(document).ready(function() {
-      // Attach the terminal to the bottom
-      $('html').append('<div id="terminal-container"></div>').append('<div id="terminal-corner">');
+      // Attach the terminal to the bottom, hidden by default
+      $('html').append('<div id="terminal-container" style="display: none"></div>').append('<div id="terminal-corner">');
 
-      $('#terminal-corner').css({'position': 'fixed', 'left': 0, 'bottom': 0, 'color': 'white', 'background-color': 'black', 'padding': '3px'}).text('>_').hide();
+      // Corner recover icon
+      $('#terminal-corner').css({
+        'position': 'fixed',
+        'left': 0,
+        'bottom': 0,
+        'color': 'white',
+        'background-color': 'black',
+        'display': 'none',
+        'padding': '3px'}).text('>_');
 
       var user = Drupal.settings['user'];
       var host = Drupal.settings['user'];
@@ -14,7 +22,7 @@ if (Drupal.jsEnabled) {
       var prompt = user + '@' + host + ' >';
 
       $('#terminal-container').height('200px');
-      $('#terminal-container').terminal('index.php?q=terminal', {custom_prompt : prompt, hello_message : welcome_message});
+      $('#terminal-container').terminal('index.php?q=terminal/input', {custom_prompt : prompt, hello_message : welcome_message});
 
       $.get('index.php?q=terminal/state', function(state) {
         if ('visible' == state) {
@@ -34,7 +42,6 @@ if (Drupal.jsEnabled) {
 DrupalTerminal = new Object;
 
 DrupalTerminal.toggle = function () {
-  // If terminal is visible hide it, if hidden show it
   $('#terminal-container').dblclick( function() {
       $(this).toggle("slow", function() {
         $('#terminal-corner').show();

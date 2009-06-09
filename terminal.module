@@ -11,7 +11,7 @@
  */
 function terminal_menu() {
   $items = array();
-  $items['terminal'] = array(
+  $items['terminal/input'] = array(
     'title' => 'Terminal AJAX Callback',
     'page callback' => 'terminal_ajax_callback',
     'access arguments' => array('access terminal'),
@@ -19,9 +19,9 @@ function terminal_menu() {
   );
 
   $items['terminal/state'] = array(
-    'title' =>'State callback',
+    'title' => 'State callback',
     'page callback' => 'terminal_state_callback',
-    'access arguments' => user_access('access terminal'),
+    'access arguments' => array('access terminal'),
     'type' => MENU_CALLBACK,
   );
 
