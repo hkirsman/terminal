@@ -3,17 +3,10 @@
 if (Drupal.jsEnabled) {
   $(document).ready(function() {
       // Attach the terminal to the bottom, hidden by default
-      $('html').append('<div id="terminal-container" style="display: none"></div>').append('<div id="terminal-corner">');
+      $('html').append('<div id="terminal-container" style="display: none"></div>').append('<img id="terminal-corner" src="images/bar.png" />');
 
       // Corner recover icon
-      $('#terminal-corner').css({
-        'position': 'fixed',
-        'left': 0,
-        'bottom': 0,
-        'color': 'white',
-        'background-color': 'black',
-        'display': 'none',
-        'padding': '3px'}).text('>_');
+      $('#terminal-corner').text('^---');
 
       var user = Drupal.settings['user'];
       var host = Drupal.settings['user'];
@@ -21,7 +14,6 @@ if (Drupal.jsEnabled) {
       var welcome_message = 'Welcome to ' + sitename + '!';
       var prompt = user + '@' + host + ' >';
 
-      $('#terminal-container').height('200px');
       $('#terminal-container').terminal('index.php?q=terminal/input', {custom_prompt : prompt, hello_message : welcome_message});
 
       $.get('index.php?q=terminal/state', function(state) {

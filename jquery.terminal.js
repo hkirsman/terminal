@@ -163,7 +163,6 @@
 			if (settings.unix_theme) {
 				terminal_container.css({
 					'border' : 'none',
-					'background-color' : 'black',
           'position': 'fixed',
           'bottom' : 0,
           'z-index' : 100,
@@ -175,12 +174,11 @@
 				});
 				terminal_input.css({
 					'border' : 'none',
-					'background-color' : 'black',
 					'padding' : '0',
 					'margin' : '0',
 				});
 				terminal_container.find('input, span').css({
-					'color' : 'lightgrey',
+					'color' : 'black',
 					'font-family' : 'monospace',
 					'font-size' : '1em',
 					'line-height' : '1.3em',

@@ -50,6 +50,7 @@ function terminal_init() {
   if (user_access('access terminal')) {
   drupal_add_js(drupal_get_path('module', 'terminal') .'/terminal.js');
   drupal_add_js(drupal_get_path('module', 'terminal') .'/jquery.terminal.js');
+  drupal_add_css(drupal_get_path('module', 'terminal') .'/terminal.css');
   global $user;
   $host = $_SERVER['host'];
   $settings = array(
