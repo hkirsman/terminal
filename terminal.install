@@ -1,5 +1,9 @@
 <?php
 // $Id$
+/**
+ * @file
+ * Schema definition for the Drupal webterminal.
+ */
 
 /**
  * Implementation of hook_schema()
@@ -9,6 +13,12 @@ function terminal_schema() {
   $schema['terminal_history'] = array(
     'description' => t('History of commands issued by the users.'),
     'fields' => array(
+      'hid' => array(
+        'description' => t('Primary Key: Unique history ID.'),
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
       'uid' => array(
         'description' => t('User id of the user issuing the command.'),
         'type' => 'int',
@@ -18,15 +28,39 @@ function terminal_schema() {
         'type' => 'varchar',
         'length' => 256,
       ),
+      'time' => array(
+        'description' => t('Timestamp for when log was made.'),
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
     ),
+    'primary key' => array('hid'),
   );
   return $schema;
 }
 
+/**
+ * Implementation of hook_install().
+ */
 function terminal_install() {
   drupal_install_schema('terminal');
 }
 
+/**
+ * Implementation of hook_install().
+ */
 function terminal_uninstall() {
   drupal_uninstall_schema('terminal');
+}
+
+/**
+ * Add an ID column to the history table.
+ */
+function terminal_update_6000() {
+  $ret = array();
+  $schema = terminal_schema();
+  $new_field = $schema['terminal_history']['fields']['hid'];
+  db_add_field($ret, 'terminal_history', 'hid', $new_field);
+  return $ret;
 }
