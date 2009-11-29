@@ -55,12 +55,14 @@ function terminal_uninstall() {
 }
 
 /**
- * Add an ID column to the history table.
+ * Add an ID and timestamp column to the history table.
  */
 function terminal_update_6000() {
   $ret = array();
   $schema = terminal_schema();
   $new_field = $schema['terminal_history']['fields']['hid'];
   db_add_field($ret, 'terminal_history', 'hid', $new_field);
+  $new_field = $schema['terminal_history']['fields']['time'];
+  db_add_field($ret, 'terminal_history', 'time', $new_field); 
   return $ret;
 }
