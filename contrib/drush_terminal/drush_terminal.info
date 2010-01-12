@@ -1,0 +1,4 @@
+; $Id$
+name = Drush Terminal
+description = Adds Drush support to the Terminal.
+core = 6.x

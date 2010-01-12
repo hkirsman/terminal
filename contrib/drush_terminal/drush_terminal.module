@@ -1,0 +1,44 @@
+<?php
+// $Id$
+
+/**
+ * Implementation of hook_menu().
+ */
+function drush_terminal_menu() {
+  $items['admin/settings/drush_terminal'] = array(
+    'title' => 'Drush Terminal',
+    'description' => 'Configure how the Terminal interacts with Drush.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('drush_terminal_admin'),
+    'access arguments' => array('administer site configuration'),
+  );
+  return $items;
+}
+
+/**
+ * Menu callback; Creates the administration settings.
+ */
+function drush_terminal_admin() {
+  $form['drush_terminal_php'] = array(
+    '#type' => 'textfield',
+    '#title' => t('PHP Path'),
+    '#description' => t('The absolute path to PHP.'),
+    '#default_value' => variable_get('drush_terminal_php', 'php'),
+    '#required' => TRUE,
+  );
+  $form['drush_terminal_drush'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Drush Path'),
+    '#description' => t('The absolute path to <em>drush.php</em>.'),
+    '#default_value' => variable_get('drush_terminal_drush', ''),
+    '#required' => TRUE,
+  );
+  $form['drush_terminal_root'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Drupal Path'),
+    '#description' => t('The absolute path to the Drupal installation to use Drush on.'),
+    '#default_value' => variable_get('drush_terminal_root', dirname(realpath('index.php'))),
+    '#required' => TRUE,
+  );
+  return system_settings_form($form);
+}

@@ -1,0 +1,36 @@
+<?php
+// $Id$
+
+/**
+ * Implementation of hook_terminal.
+ */
+function drush_terminal_terminal() {
+  $commands['drush'] = array(
+    'title' => t('Drush'),
+    'pattern' => 'drush help [command]',
+    'description' => t('Execute "drush help" for more information.'),
+    'callback' => 'drush_terminal_terminal_command',
+  );
+  return $commands;
+}
+
+/**
+ * Terminal callback; Executes a Drush command.
+ */
+function drush_terminal_terminal_command($args = array()) {
+  // Retrieve the required values.
+  $php = variable_get('drush_terminal_php', NULL);
+  $drush = variable_get('drush_terminal_drush', NULL);
+  $root = variable_get('drush_terminal_root', NULL);
+  if (!isset($php, $drush, $root)) {
+    echo t('You must visit admin/settings/drush_terminal and configure the module.');
+    exit;
+  }
+
+  // Invoke Drush.
+  $args = implode(' ', $args);
+  $output = array();
+  exec("$php $drush -r '$root' " . $args, $output);
+  $output = implode("\n", $output);
+  echo $output;
+}
