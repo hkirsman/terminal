@@ -40,5 +40,11 @@ function drush_terminal_admin() {
     '#default_value' => variable_get('drush_terminal_root', dirname(realpath('index.php'))),
     '#required' => TRUE,
   );
+  $form['drush_terminal_phpargs'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Additional PHP arguments'),
+    '#description' => t('An optional list of additional PHP arguments to be injected right after the PHP tag call. With "-d safe_mode=off", we disable the PHP safe mode, which is one of the requirement in order for Drush to run.'),
+    '#default_value' => variable_get('drush_terminal_phpargs', '-d safe_mode=off'),
+  );
   return system_settings_form($form);
 }

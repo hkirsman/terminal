@@ -22,6 +22,7 @@ function drush_terminal_terminal_command($args = array()) {
   $php = variable_get('drush_terminal_php', NULL);
   $drush = variable_get('drush_terminal_drush', NULL);
   $root = variable_get('drush_terminal_root', NULL);
+  $phpargs = variable_get('drush_terminal_phpargs', '-d safe_mode=off');
   if (!isset($php, $drush, $root)) {
     echo t('You must visit admin/settings/drush_terminal and configure the module.');
     exit;
@@ -30,7 +31,7 @@ function drush_terminal_terminal_command($args = array()) {
   // Invoke Drush.
   $args = implode(' ', $args);
   $output = array();
-  exec("$php $drush -r '$root' " . $args, $output);
+  exec("$php $phpargs $drush -r '$root' " . $args, $output);
   $output = implode("\n", $output);
   echo $output;
 }
