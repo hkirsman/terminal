@@ -17,6 +17,18 @@ function terminal_terminal() {
     'description' => t('Display the history list. If N is provided, will display the given amount of results. Defaults to 5.'),
     'callback' => 'terminal_command_history',
   );
+  $commands['cache-clear'] = array(
+    'title' => t('Cache Clear'),
+    'pattern' => 'cache-clear',
+    'description' => t('Clears all the Drupal cache.'),
+    'callback' => 'terminal_command_cacheclear',
+  );
+  $commands['cron'] = array(
+    'title' => t('Cron run'),
+    'pattern' => 'cron',
+    'description' => t('Run all cron hooks.'),
+    'callback' => 'terminal_command_cron',
+  );
   return $commands;
 }
 
@@ -59,4 +71,19 @@ function terminal_command_history($args = array()) {
   foreach ($hist as $input) {
     echo $input . "\n";
   }
+}
+
+/**
+ * Terminal command for "cache-clear".
+ */
+function terminal_command_cacheclear() {
+  drupal_flush_all_caches();
+  echo t('The cache has been cleared.');
+}
+
+/**
+ * Terminal command for "cron".
+ */
+function terminal_command_cron() {
+  echo drupal_cron_run() ? t('Cron ran successfully.') : t('Cron run failed.');
 }
