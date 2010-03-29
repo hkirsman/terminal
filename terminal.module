@@ -42,11 +42,15 @@ function terminal_init() {
     drupal_add_js(drupal_get_path('module', 'terminal') .'/terminal.js');
     drupal_add_js(drupal_get_path('module', 'terminal') .'/jquery.terminal.js');
     drupal_add_css(drupal_get_path('module', 'terminal') .'/terminal.css');
+
     global $user;
+    $prompt = $user->name . '@' . $_SERVER['SERVER_NAME'] . ' >';
+    $welcome = t('Welcome to @site!', array('@site' => variable_get('site_name', '')));
+
     $settings = array(
-      'user' => $user->name,
-      'server' => $_SERVER['SERVER_NAME'],
-      'sitename' => variable_get('site_name', ''),
+      'welcome_message' => $welcome,
+      'prompt' => $prompt,
+      'terminal' => theme('terminal_terminal'),
     );
     drupal_add_js(array('terminal' => $settings), 'setting');
   }
@@ -97,7 +101,6 @@ function terminal_history($input, $uid = NULL, $time = NULL) {
   drupal_write_record('terminal_history', $history);
 }
 
-
 /**
  * Retrieves the available commands exposed to the Terminal.
  *
@@ -121,3 +124,25 @@ function terminal_commands($command = NULL) {
   }
   return $commands;
 }
+
+/**
+ * Implementation of hook_theme()
+ */
+function terminal_theme() {
+  return array(
+    'terminal_terminal' => array(
+      'arguments' => array($title => NULL),
+      'template' => 'terminal_terminal',
+    ),
+  );
+}
+
+function theme_terminal_terminal($title) {
+}
+
+function template_preprocess_terminal_terminal(&$variables) {
+  $attributes['id'] = "terminal-container";
+  $attributes = drupal_attributes($attributes);
+  $variables['attr'] = $attributes;
+}
+

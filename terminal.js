@@ -9,38 +9,33 @@ DrupalTerminal = {
 
 if (Drupal.jsEnabled) {
   $(document).ready(function() {
-    // Attach the terminal to the bottom, hidden by default
-    $('html').append('<div id="terminal-container" style="display: none"></div>').append('<img id="terminal-corner" src="images/bar.png" />');
-
+    $('html').append(Drupal.settings['terminal']['terminal']);
     // Corner recover icon
-    $('#terminal-corner').text('^---');
+    var recover_text = '^---';
 
-    var user = Drupal.settings['terminal']['user'];
-    var host = Drupal.settings['terminal']['server'];
-    var sitename = Drupal.settings['terminal']['sitename'];
-    var welcome_message = 'Welcome to ' + sitename + '!';
-    var prompt = user + '@' + host + ' >';
+    var welcome_message = Drupal.settings['terminal']['welcome_message'];
+    var prompt = Drupal.settings['terminal']['prompt'];
 
-    $('#terminal-container').terminal(Drupal.settings.basePath + '?q=terminal/input', {custom_prompt : prompt, hello_message : welcome_message});
+    $('#terminal-container .body').terminal(Drupal.settings.basePath + '?q=terminal/input', {custom_prompt : prompt, hello_message : welcome_message});
 
     // See whether or not we should display the terminal on page load.
     DrupalTerminal.visible = jQuery.cookie ? $.cookie('DrupalTerminal') : 0;
     if (DrupalTerminal.visible == 1) {
-      $('#terminal-container').show();
-      $('#terminal-corner').hide();
+      $('#terminal-container .body').show();
+      $('#terminal-container').height('200px');
     }
     else {
-      $('#terminal-container').hide();
-      $('#terminal-corner').show();
+      $('#terminal-container .body').hide();
+      $('#terminal-container').height('20px');
+      $('#terminal-container .title').text('^---');
     }
 
-    // Register the terminal events.
-    $('#terminal-container').dblclick( function() {
-      DrupalTerminal.close();
+    // Register the terminal events that happen on the title bar.
+    $('#terminal-container .title').dblclick( function() {
+      DrupalTerminal.toggle();
     });
-    $('#terminal-corner').click( function() {
-      DrupalTerminal.open();
-    });
+
+    // We are also listening to the keyboard.
     if (window.addEventListener) {
       window.addEventListener("keydown", function(e) {
         if (e.keyCode == 192) {
@@ -67,8 +62,10 @@ DrupalTerminal.toggle = function() {
  * Opens the terminal.
  */
 DrupalTerminal.open = function() {
-  $('#terminal-container').slideDown("slow", function() {
-    $('#terminal-corner').hide();
+  $('#terminal-container .body').slideDown("slow", function() {
+      $(this).show();
+      $('#terminal-container').height('200px');
+      $('#terminal-container .title').text('');
   });
   if (jQuery.cookie) {
     $.cookie('DrupalTerminal', 1);
@@ -80,11 +77,14 @@ DrupalTerminal.open = function() {
  * Closes the terminal.
  */
 DrupalTerminal.close = function() {
-  $('#terminal-container').slideUp("slow", function() {
-    $('#terminal-corner').show();
+  $('#terminal-container .body').slideUp("slow", function() {
+      $('#terminal-container').height('20px');
+      $('#terminal-container .title').text('^---');
+      $(this).hide();
   });
   if (jQuery.cookie) {
     $.cookie('DrupalTerminal', 0);
   }
   return DrupalTerminal.visible = 0;
 };
+

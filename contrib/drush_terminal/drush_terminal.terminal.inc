@@ -35,3 +35,4 @@ function drush_terminal_terminal_command($args = array()) {
   $output = implode("\n", $output);
   echo $output;
 }
+
