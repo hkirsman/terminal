@@ -1,5 +1,4 @@
 <?php
-// $Id$
 
 /**
  * Expose a method to be executed by the Drupal Terminal.

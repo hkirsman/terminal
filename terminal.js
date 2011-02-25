@@ -1,4 +1,3 @@
-// $Id$
 
 /**
  * The base DrupalTerminal namespace.
