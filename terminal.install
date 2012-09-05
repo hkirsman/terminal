@@ -40,20 +40,6 @@ function terminal_schema() {
 }
 
 /**
- * Implementation of hook_install().
- */
-function terminal_install() {
-  drupal_install_schema('terminal');
-}
-
-/**
- * Implementation of hook_install().
- */
-function terminal_uninstall() {
-  drupal_uninstall_schema('terminal');
-}
-
-/**
  * Add an ID and timestamp column to the history table.
  */
 function terminal_update_6000() {
@@ -62,6 +48,6 @@ function terminal_update_6000() {
   $new_field = $schema['terminal_history']['fields']['hid'];
   db_add_field($ret, 'terminal_history', 'hid', $new_field);
   $new_field = $schema['terminal_history']['fields']['time'];
-  db_add_field($ret, 'terminal_history', 'time', $new_field); 
+  db_add_field($ret, 'terminal_history', 'time', $new_field);
   return $ret;
 }

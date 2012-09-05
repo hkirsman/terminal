@@ -3,7 +3,7 @@
 
 /**
  * @file
- * Provides a Terminal to Drupal. 
+ * Provides a Terminal to Drupal.
  */
 
 /**
@@ -31,11 +31,9 @@ function terminal_perm() {
  */
 function terminal_init() {
   if (user_access('access terminal')) {
-    // The jQuery Plugin module contains the jQuery Cookie plugin, which is
+    // jQuery Cookie plugin is
     // helpful to keep the terminal up if desired.
-    if (module_exists('jquery_plugin')) {
-      jquery_plugin_add('cookie');
-    }
+    drupal_add_js('misc/jquery.cookie.js');
 
     // Add all the Terminal JavaScript and CSS.
     drupal_add_js(drupal_get_path('module', 'terminal') .'/terminal.js');
@@ -130,7 +128,6 @@ function terminal_commands($command = NULL) {
 function terminal_theme() {
   return array(
     'terminal_terminal' => array(
-      'arguments' => array($title => NULL),
       'template' => 'terminal_terminal',
     ),
   );

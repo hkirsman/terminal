@@ -59,10 +59,10 @@ function terminal_command_history($args = array()) {
   global $user;
   $n = (isset($args[0]) && is_numeric($args[0])) ? $args[0] : 5;
   // Retrieve the user's history.
-  $result = db_query("SELECT * FROM {terminal_history} WHERE uid = %d ORDER BY hid DESC LIMIT 0,%d", $user->uid, $n);
+  $result = db_query_range("SELECT * FROM {terminal_history} WHERE uid = :uid ORDER BY hid DESC", 0, $n, array(':uid' => $user->uid));
   // Construct the history array.
   $hist = array();
-  while ($history = db_fetch_object($result)) {
+  foreach ($result as $history) {
     $hist[$history->hid] = $history->input;
   }
   // Make sure to present it in the correct order.
